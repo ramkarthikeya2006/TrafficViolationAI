@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic-Vision AI | Detection Results</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 25px;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #172033;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .header {
+            background: #111b30;
+            color: white;
+            padding: 22px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #dce4ef;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        .stat {
+            background: #f8faff;
+            border: 1px solid #dce4ef;
+            padding: 18px;
+            border-radius: 10px;
+        }
+
+        .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2864e8;
+            margin-top: 8px;
+        }
+
+        video {
+            display: block;
+            width: 100%;
+            max-height: 600px;
+            background: #111;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5eaf2;
+        }
+
+        th {
+            background: #f1f5fb;
+        }
+
+        .button {
+            display: inline-block;
+            background: #2864e8;
+            color: white;
+            text-decoration: none;
+            padding: 11px 16px;
+            border-radius: 7px;
+            margin-top: 12px;
+        }
+
+        .secondary {
+            background: #111b30;
+            margin-left: 8px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 12px;
+            }
+
+            .card {
+                padding: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <header class="header">
+        <h1>TRAFFIC-VISION AI</h1>
+        <p>Intelligent Traffic Violation Detection and Monitoring System</p>
+    </header>
+
+    <section class="stats">
+        <div class="stat">
+            <div>Total Vehicle Detections</div>
+            <div class="number">{{ vehicle_count }}</div>
+        </div>
+
+        <div class="stat">
+            <div>Video Processing</div>
+            <div class="number" style="font-size: 20px;">Completed</div>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>Processed Video</h2>
+        <p>AI-detected vehicles video output:</p>
+
+        <video controls preload="metadata">
+            <source src="{{ processed_video }}">
+            Your browser does not support this video format.
+        </video>
+
+        <p>
+            <a class="button" href="{{ processed_video }}"
+               target="_blank" rel="noopener">
+                Open Video
+            </a>
+
+            <a class="button secondary"
+               href="{{ url_for('upload_video') }}">
+                Upload Another Video
+            </a>
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>Vehicle Detection Records</h2>
+
+        {% if detections %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Frame Number</th>
+                        <th>Vehicle Type</th>
+                        <th>Confidence</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for item in detections %}
+                    <tr>
+                        <td>{{ item.frame }}</td>
+                        <td>{{ item.vehicle }}</td>
+                        <td>{{ (item.confidence * 100)|round(1) }}%</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p>No supported vehicles were detected in this video.</p>
+        {% endif %}
+    </section>
+
+</div>
+</body>
+</html>

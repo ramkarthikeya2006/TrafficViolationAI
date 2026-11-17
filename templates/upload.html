@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Traffic Video</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            margin: 0;
+            color: #172033;
+        }
+        header {
+            background: #101a30;
+            color: white;
+            padding: 18px 5%;
+        }
+        main {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px #00000010;
+        }
+        input, button {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 12px;
+            margin-top: 18px;
+        }
+        button {
+            background: #2563eb;
+            color: white;
+            border: 0;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+        a { color: #2563eb; }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>TRAFFIC-VISION AI</h2>
+    </header>
+    <main>
+        <div class="card">
+            <h1>Upload Traffic Video</h1>
+            <p>Select a traffic video to upload for analysis.</p>
+
+            {% for message in get_flashed_messages() %}
+                <p>{{ message }}</p>
+            {% endfor %}
+
+            <form action="/upload" method="POST"
+                  enctype="multipart/form-data">
+                <input type="file" name="video"
+                       accept=".mp4,.avi,.mov,.mkv" required>
+                <button type="submit">Upload Video</button>
+            </form>
+
+            <p><a href="/">Back to Dashboard</a></p>
+        </div>
+    </main>
+</body>
+</html>
